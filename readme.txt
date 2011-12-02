@@ -34,6 +34,10 @@ If you do, you should probabley email tweston@travisweston.com, or visit http://
 
 == Changelog ==
 
+= 2.1.1 =
+
+Updated Donate and Plugin URLs
+
 = 2.1 =
 
 Added option to automatically update when new settings are saved. This cycles through all your posts, and updates each one based on the new Auto More Tag settings. Also added in a shortcode for manual placement, for those times when you just have to do it yourself.
