@@ -2,11 +2,11 @@
 
 /*
   Plugin Name: Auto More Tag
-  Plugin URI: https://github.com/toubsen/wp-auto-more-tag
+  Plugin URI: https://github.com/anubisthejackle/wp-auto-more-tag
   Description: Automatically add a More tag to your posts upon publication. No longer are you required to spend your time figuring out the perfect position for the more tag, you can now set a rule and this plugin will--to the best of it's abilities--add a proper more tag at or at the nearest non-destructive location.
   Author: Travis Weston, Tobias Vogel
   Author URI: https://github.com/anubisthejackle
-  Version: 3.2.2
+  Version: 4.0.0
  */
 
 if (!defined('TW_AUTO_MORE_TAG')) {
@@ -29,7 +29,13 @@ if (!defined('TW_AUTO_MORE_TAG')) {
 		}
 
 		public static function addTag($data, $arr = array()) {
-			global $post;
+			global $post, $pages, $page;
+
+			if( $page > count( $pages ) )
+				$page = count( $pages );
+
+			$data = $pages[ $page - 1 ];
+
 			$options = get_option('tw_auto_more_tag');
 
 			if ($post->post_type != 'post' && $options['set_pages'] != true) {
@@ -51,18 +57,22 @@ if (!defined('TW_AUTO_MORE_TAG')) {
 
 			switch ($options['units']) {
 				case 1:
-					return self::$_instance->byCharacter($data, $length, $breakOn);
+					$data = self::$_instance->byCharacter($data, $length, $breakOn);
 					break;
 
 				case 2:
 				default:
-					return self::$_instance->byWord($data, $length, $breakOn);
+					$data = self::$_instance->byWord($data, $length, $breakOn);
 					break;
 
 				case 3:
-					return self::$_instance->byPercent($data, $length, $breakOn);
+					$data = self::$_instance->byPercent($data, $length, $breakOn);
 					break;
 			}
+
+			$pages[ $page - 1 ] = $data;
+			return get_the_content();
+
 		}
 
 		public function manual($data) {
@@ -233,7 +243,7 @@ if (!defined('TW_AUTO_MORE_TAG')) {
 		}
 
 		private function updateAll() {
-
+			return;
 			$posts = get_posts(array(
 				'numberposts' => '-1',
 				'post_status' => 'publish',
@@ -261,7 +271,7 @@ if (!defined('TW_AUTO_MORE_TAG')) {
 
 	add_action('admin_init', array($tw_auto_more_tag, 'initOptionsPage'));
 	add_action('admin_menu', array($tw_auto_more_tag, 'addPage'));
-	add_filter('content_save_pre', 'tw_auto_more_tag::addTag', '1', 2);
+	add_filter('the_content', 'tw_auto_more_tag::addTag', '-1', 2);
 	add_shortcode('amt_override', array($tw_auto_more_tag, 'manualOverride'));
 
 	define('TW_AUTO_MORE_TAG', true);
