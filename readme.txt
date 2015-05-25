@@ -3,7 +3,7 @@ Contributors: anubisthejackle, toubsen
 Tags: more, tag, content, development, travis, weston
 Requires at least: 3.2.1
 Tested up to: 4.2
-Stable tag: 4.0.0
+Stable tag: 4.1.0
 
 Allows you to add a More tag to your post automatically upon publication.
 
@@ -35,6 +35,9 @@ Head to the [Github project's issue tracker](https://github.com/anubisthejackle/
 1. This is the options page for Auto More Tag.
 
 == Changelog ==
+
+= 4.1.0 =
+* Adds option to customize More link text.
 
 = 4.0.0 =
 * Alters the way the tag is added. Instead of saving the tag into the content at post save, the more tag is now added on page load.
